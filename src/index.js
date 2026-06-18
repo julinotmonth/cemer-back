@@ -6,8 +6,14 @@ const app = express()
 const PORT = process.env.PORT || 3001
 
 // Middleware
+// FRONTEND_URL bisa berisi satu atau beberapa origin dipisah koma,
+// contoh: "http://localhost:5173,https://nama-app-anda.netlify.app"
+const allowedOrigins = (process.env.FRONTEND_URL || '*')
+  .split(',')
+  .map(o => o.trim())
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || '*',
+  origin: allowedOrigins.includes('*') ? '*' : allowedOrigins,
   credentials: true,
 }))
 app.use(express.json())
